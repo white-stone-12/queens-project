@@ -24,7 +24,6 @@ body {
 .hero h1 {
     font-size: 26px;
     color: #ff2e2e;
-    margin: 0;
 }
 
 .hero p {
@@ -51,70 +50,45 @@ body {
     max-width: 320px;
     text-align: center;
     box-shadow: 0 0 15px rgba(255,0,0,0.4);
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: scale(1.03);
 }
 
 .card h3 {
-    font-size: 18px;
     color: #ff2e2e;
 }
 
-.card p {
-    font-size: 14px;
-}
-
-.card h2 {
-    font-size: 22px;
-}
-
-/* BUTTON */
 .btn {
     background: #ff2e2e;
-    border: none;
     padding: 12px;
-    color: white;
+    border: none;
     border-radius: 25px;
+    color: white;
     cursor: pointer;
-    font-size: 14px;
     width: 100%;
 }
 
-.btn:hover {
-    background: red;
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #111;
+    margin-top: 40px;
 }
 
-/* DESKTOP */
-@media(min-width: 768px){
-    .services {
-        flex-direction: row;
-        justify-content: center;
-    }
-
-    .card {
-        width: 260px;
-        margin: 15px;
-    }
-
-    .hero h1 {
-        font-size: 38px;
-    }
+footer a {
+    color: #ff2e2e;
+    text-decoration: none;
+    margin: 0 10px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- HERO -->
 <div class="hero">
     <h1>👑 Queens Breakup Company</h1>
     <p>We end it. You glow up.</p>
 </div>
 
-<!-- SERVICES -->
 <div class="services">
 
 <div class="card">
@@ -140,24 +114,31 @@ body {
 
 </div>
 
-<!-- Razorpay -->
+<!-- FOOTER -->
+<footer>
+  <p>Contact: support.queenbreakup@gmail.com</p>
+  <p>
+    <a href="/privacy">Privacy Policy</a> |
+    <a href="/terms">Terms & Conditions</a> |
+    <a href="/contact">Contact Us</a>
+  </p>
+  <p>© 2026 Queens Breakup Company</p>
+</footer>
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
 function payNow(amount){
-
     fetch("/create-order", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify({amount: amount})
     })
     .then(res => res.json())
     .then(order => {
 
         var options = {
-            key: "rzp_test_ST9NYSaPG6xNvX", // 🔑 PUT YOUR KEY
+            key: "rzp_test_ST9NYSaPG6xNvX",
             amount: order.amount,
             currency: "INR",
             name: "Queens Breakup Company",
@@ -165,7 +146,6 @@ function payNow(amount){
             order_id: order.id,
 
             handler: function (response){
-
                 fetch("/payment", {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
