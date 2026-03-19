@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Queens Breakup Company</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: black;
+    color: white;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 50px 15px;
+    background: linear-gradient(180deg, black, #8b0000);
+}
+
+.hero h1 {
+    font-size: 26px;
+    color: #ff2e2e;
+    margin: 0;
+}
+
+.hero p {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+/* SERVICES */
+.services {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* CARD */
+.card {
+    background: #111;
+    border: 1px solid #ff2e2e;
+    margin: 12px 0;
+    padding: 20px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255,0,0,0.4);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+.card h3 {
+    font-size: 18px;
+    color: #ff2e2e;
+}
+
+.card p {
+    font-size: 14px;
+}
+
+.card h2 {
+    font-size: 22px;
+}
+
+/* BUTTON */
+.btn {
+    background: #ff2e2e;
+    border: none;
+    padding: 12px;
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+}
+
+.btn:hover {
+    background: red;
+}
+
+/* DESKTOP */
+@media(min-width: 768px){
+    .services {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .card {
+        width: 260px;
+        margin: 15px;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <h1>👑 Queens Breakup Company</h1>
+    <p>We end it. You glow up.</p>
+</div>
+
+<!-- SERVICES -->
+<div class="services">
+
+<div class="card">
+    <h3>💬 Breakup Message</h3>
+    <p>Professional message crafted for closure</p>
+    <h2>₹199</h2>
+    <button class="btn" onclick="payNow(199)">Book Now</button>
+</div>
+
+<div class="card">
+    <h3>📞 Consultation</h3>
+    <p>1-on-1 private guidance session</p>
+    <h2>₹499</h2>
+    <button class="btn" onclick="payNow(499)">Book Now</button>
+</div>
+
+<div class="card">
+    <h3>💔 Full Breakup Plan</h3>
+    <p>Complete emotional + strategy support</p>
+    <h2>₹999</h2>
+    <button class="btn" onclick="payNow(999)">Book Now</button>
+</div>
+
+</div>
+
+<!-- Razorpay -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+function payNow(amount){
+
+    fetch("/create-order", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({amount: amount})
+    })
+    .then(res => res.json())
+    .then(order => {
+
+        var options = {
+            key: "rzp_test_ST9NYSaPG6xNvX", // 🔑 PUT YOUR KEY
+            amount: order.amount,
+            currency: "INR",
+            name: "Queens Breakup Company",
+            description: "Service Payment",
+            order_id: order.id,
+
+            handler: function (response){
+
+                fetch("/payment", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        payment_id: response.razorpay_payment_id,
+                        amount: amount
+                    })
+                });
+
+                window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSdexCTKOVXaRWhF4hfx-x-G97CXkioD-ITysRQcb5lSM7DknQ/viewform";
+            }
+        };
+
+        var rzp = new Razorpay(options);
+        rzp.open();
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI';
+    background: black;
+    color: white;
+}
+
+/* HEADER */
+.header {
+    background: linear-gradient(90deg, black, red);
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+/* LOGOUT */
+.logout {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background: red;
+    padding: 8px 12px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+/* STATS */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.card {
+    background: #111;
+    padding: 20px;
+    border-radius: 10px;
+    width: 180px;
+    text-align: center;
+    box-shadow: 0 0 15px red;
+}
+
+.card h2 {
+    color: red;
+}
+
+/* TABLE */
+.table-container {
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: red;
+    padding: 12px;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid red;
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>👑 Queens Admin Dashboard</h1>
+    <a href="/logout" class="logout">Logout</a>
+</div>
+
+<div class="stats">
+    <div class="card">
+        <h2>{{ data|length }}</h2>
+        <p>Total Orders</p>
+    </div>
+
+    <div class="card">
+        <h2>₹{{ data | map(attribute=2) | map('int') | sum }}</h2>
+        <p>Total Revenue</p>
+    </div>
+</div>
+
+<div class="table-container">
+
+<table>
+<tr>
+<th>Payment ID</th>
+<th>Amount</th>
+</tr>
+
+{% for row in data %}
+<tr>
+<td>{{ row[1] }}</td>
+<td>₹{{ row[2] }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+
+</body>
+</html>
